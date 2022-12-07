@@ -26,6 +26,9 @@ class ProductControllerTest extends TestCase
 
         $response = $this->getJson('/api/products');
 
+        // We can debug responses with this.
+        // $reponse->dump();
+
         $response->assertSuccessful();
         // $response->assertHeader('content-type', 'application/json');
         $response->assertJsonCount(5, 'data');
