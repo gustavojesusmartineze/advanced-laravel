@@ -10,6 +10,7 @@ class Rating extends Pivot
 {
     use HasFactory;
 
+    // we have auto incrementing fields.
     public $incrementing = true;
 
     protected $table = 'ratings';
