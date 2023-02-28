@@ -19,7 +19,7 @@ class SendEmailVerificationReminderCommand extends Command
             ->whereNull('email_verified_at')
             ->each(function (User $user) {
                 // Equivalente a $this->notify(new VerifyEmail);
-                $user->sendEmailVerificationNotification();
+                // $user->sendEmailVerificationNotification();
             });
     }
 }
