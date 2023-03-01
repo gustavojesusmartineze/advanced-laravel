@@ -13,7 +13,9 @@ class SendNewsletterCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'send:newsletter {emails?*}';
+    protected $signature = 'send:newsletter
+        {emails?*} : Correos Electronicos a los cuales enviar directamente
+        {--s|schedule : Si debe ser ejecutado directamente o no}';
 
     /**
      * The console command description.
@@ -39,28 +41,33 @@ class SendNewsletterCommand extends Command
      */
     public function handle()
     {
-        $emails = $this->argument('emails');
+        $userEmails = $this->argument('emails');
+        $schedule = $this->option('schedule');
 
-        $builder= User::query();
+        $builder = User::query();
 
-        if (isset($emails) && count($emails) > 0) {
-            $builder->whereIn('email', $emails);
+        if (isset($userEmails) && count($userEmails) > 0) {
+            $builder->whereIn('email', $userEmails);
         }
 
+        $builder->whereNotNull('email_verified_at');
         $count = $builder->count();
 
-        if (!$count) {
-            $this->info("No email sent");
-        } else {
-            $this->output->progressStart($count);
-            $builder->whereNotNull('email_verified_at')
-                ->each(function(User $user) {
+        if ($count) {
+            $this->info("Se enviaran {$count} correos");
+
+            if ($this->confirm('¿Estas de acuerdo?') || $schedule) {
+                $this->output->progressStart($count);
+                $builder->each(function (User $user) {
                     $user->notify(new NewsletterNotification());
                     $this->output->progressAdvance();
                 });
-
-            $this->info("{$count} Emails sent");
-            $this->output->progressFinish();
+                $this->output->progressFinish();
+                $this->info('Correos enviados');
+                return;
+            }
         }
+
+        $this->info('No se enviaron correos');
     }
 }
