@@ -23,4 +23,10 @@ Route::post('sanctum/token', 'UserTokenController');
 Route::apiResource('products', 'ProductController')->middleware('auth:sanctum');
 Route::apiResource('categories', 'CategoryController')->middleware('auth:sanctum');
 
-Route::post('/newsletter', 'NewsletterController@send');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('newsletter', [\App\Http\Controllers\NewsletterController::class, 'send'])->name('send.newsletter');
+
+    Route::post('products/{product}/rate', [\App\Http\Controllers\ProductRatingController::class, 'rate']);
+
+    Route::post('products/{product}/unrate', [\App\Http\Controllers\ProductRatingController::class, 'unrate']);
+});

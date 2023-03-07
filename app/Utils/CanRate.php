@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Events\ModelRated;
+use App\Events\ModelUnrated;
 use Illuminate\Database\Eloquent\Model;
 
 trait CanRate
@@ -41,6 +42,18 @@ trait CanRate
             ]);
 
         event(new ModelRated($this, $model, $score));
+
+        return true;
+    }
+
+    public function unrate(Model $model): bool {
+        if (!$this->hasRated($model)) {
+            return false;
+        }
+
+        $this->ratings($model->getMorphClass())->detach($model->getKey());
+
+        event(new ModelUnrated($this, $model));
 
         return true;
     }
