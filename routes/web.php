@@ -27,3 +27,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/exception', function () {
     throw new \Exception("I'm an exception");
 });
+
+Route::get('/server-error', function () {
+    abort(500);
+});
