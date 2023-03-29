@@ -34,7 +34,7 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e, $request) {
+        $this->renderable(function (Throwable $e, $request) {
 
             if ($request->expectsJson()) {
                 return response()->json([

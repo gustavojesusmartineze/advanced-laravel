@@ -36,4 +36,15 @@ class UserFactory extends Factory
             ];
         });
     }
+
+    // Con los states puedes dar características propias a los factories (Cada vez que lo usamos is_admin se pondrá en true)
+    public function admin() {
+
+        return $this->state(function (array $attributes) {
+            return [
+                'is_admin' => true,
+            ];
+        });
+
+    }
 }
