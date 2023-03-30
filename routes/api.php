@@ -29,6 +29,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('products/{product}/rate', [\App\Http\Controllers\ProductRatingController::class, 'rate']);
 
     Route::post('products/{product}/unrate', [\App\Http\Controllers\ProductRatingController::class, 'unrate']);
+
+    Route::post("rating/{rating}/approve", [\App\Http\Controllers\ProductRatingController::class, 'approve']);
+
+    Route::get("rating", [\App\Http\Controllers\ProductRatingController::class, 'list']);
 });
 
 Route::get('/server-error', function () {
