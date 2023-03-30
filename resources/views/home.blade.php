@@ -14,6 +14,14 @@
                         </div>
                     @endif
 
+                    @if (isset($rating))
+                        <ul>
+                            @foreach ($rating as $r)
+                                <li>{{ $r->rateable->name }} - Score: {{ $r->score }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+
                     {{ __('You are logged in!') }}
                 </div>
             </div>
